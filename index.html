@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Node CSV File Upload</title>
+    <title>Check</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
@@ -10,6 +10,14 @@
     />
   </head>
   <body>
+    <form action="/data" method="get">
+      <div class="mb-3">
+        <input type="text" class="form-control" name="templateFileId" />
+      </div>
+      <div class="d-grid">
+        <input type="submit" class="btn btn-dark" />
+      </div>
+    </form>
     <form action="/import-csv" method="post" enctype="multipart/form-data">
       <div class="mb-3">
         <input

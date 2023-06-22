@@ -6,6 +6,7 @@ const mysql = require("mysql2");
 const multer = require("multer");
 const csv = require("fast-csv");
 const ExcelJS = require("exceljs");
+const { log } = require("console");
 
 const app = express();
 app.use(express.static("./public"));
@@ -163,15 +164,16 @@ async function fillDatatoExcel(templateFileId) {
       });
     });
     const workbook = new ExcelJS.Workbook();
+    console.log(templateFileId);
 
-    await workbook.xlsx.readFile("uploads/H17_1.xlsx");
+    await workbook.xlsx.readFile(`uploads/${templateFileId}.xlsx`);
 
     const worksheet = workbook.getWorksheet("Table 1");
 
     dataCell.forEach((item) => {
       worksheet.getCell(item.cell).value = item.value;
     });
-    await workbook.xlsx.writeFile("output/output.xlsx");
+    await workbook.xlsx.writeFile(`output/${templateFileId}_template.xlsx`);
 
     return data;
   } catch (error) {
