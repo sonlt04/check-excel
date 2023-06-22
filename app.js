@@ -74,8 +74,14 @@ function uploadCsv(uriFile) {
   let fileStream = csv
     .parse()
     .on("data", function (data) {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i] === "") {
+          data[i] = "koco";
+        }
+      }
       csvDataColl.push(data);
     })
+
     .on("end", function () {
       csvDataColl.shift();
 
