@@ -48,7 +48,8 @@ app.get("/", (req, res) => {
 
 app.get("/data", async (req, res) => {
   const template_file_id = req.query.templateFileId;
-  await fillDatatoExcel(template_file_id);
+  const template_sheet_name = req.query.sheetName;
+  await fillDatatoExcel(template_sheet_name, template_file_id);
   res.redirect("/");
 });
 
@@ -134,7 +135,7 @@ function query(sql, values = []) {
     });
   });
 }
-async function fillDatatoExcel(templateFileId) {
+async function fillDatatoExcel(sheetName, templateFileId) {
   let selectQuery = `SELECT form_field_new,input_field_name FROM template where template_file_id = $1`;
   try {
     let data = await query(selectQuery, [templateFileId]);
@@ -161,12 +162,12 @@ async function fillDatatoExcel(templateFileId) {
 
     await workbook.xlsx.readFile(`uploads/${templateFileId}.xlsx`);
 
-    const worksheet = workbook.getWorksheet("Table 1");
+    const worksheet = workbook.getWorksheet(sheetName);
     let check = 0;
     for (let i = 0; i < dataCell.length; i++) {
       if (dataCell[i].cell == "koco") {
-        continue;
         check++;
+        continue;
       }
       if (check == dataCell.length - 1) {
         return;
